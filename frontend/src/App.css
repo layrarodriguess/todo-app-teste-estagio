@@ -1,0 +1,259 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 20px;
+}
+
+.app__card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 1px 2px rgba(32, 40, 35, 0.04), 0 8px 24px rgba(32, 40, 35, 0.05);
+}
+
+.app__header {
+  margin-bottom: 24px;
+}
+
+.app__header h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.app__subtitle {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.app__error {
+  background: var(--danger-soft);
+  color: var(--danger);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin: 16px 0 0;
+}
+
+.app__loading {
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 24px 0;
+  font-size: 0.9rem;
+}
+
+/* --- Formulário --- */
+
+.task-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.task-form__input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.task-form__input:focus {
+  border-color: var(--accent);
+}
+
+.task-form__button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.task-form__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.task-form__button:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+/* --- Filtros --- */
+
+.app__filters {
+  display: flex;
+  gap: 6px;
+  margin: 20px 0 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.app__filter-btn {
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app__filter-btn:hover {
+  background: var(--bg);
+}
+
+.app__filter-btn--active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* --- Lista de tarefas --- */
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-list__empty {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  padding: 32px 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.task-item:hover {
+  background: var(--bg);
+}
+
+.task-item:hover .task-item__actions {
+  opacity: 1;
+}
+
+.task-item__checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.task-item__checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.task-item__checkmark {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  display: inline-block;
+  transition: all 0.15s ease;
+}
+
+.task-item__checkbox input:checked + .task-item__checkmark {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.task-item__title {
+  flex: 1;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.task-item--done .task-item__title {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.task-item__edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.task-item__actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.task-item__icon-btn {
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-item__icon-btn:hover {
+  background: var(--border);
+}
+
+.task-item__icon-btn--danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* --- Responsivo --- */
+
+@media (max-width: 480px) {
+  .app {
+    padding: 0;
+  }
+
+  .app__card {
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    border: none;
+    padding: 24px 16px;
+  }
+
+  .task-item__actions {
+    opacity: 1;
+  }
+}
