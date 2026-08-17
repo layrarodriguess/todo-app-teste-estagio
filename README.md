@@ -51,6 +51,8 @@ Erros voltam nesse formato: `{ "error": "mensagem" }`
   só valida e chama o service
 - Usei Zod pra validar o que chega na API (título vazio, tipo errado etc.)
 - Backend usa `import`/`export` (ES Modules) em vez de `require`
+- PostgreSQL está integrado
+- Criei taskRepository.js e agora o repository 
 
 ## O que eu faria com mais tempo
 
