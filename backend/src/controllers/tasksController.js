@@ -1,73 +1,71 @@
-const tasksStore = require("../data/tasksStore");
+import { taskService } from "../services/taskService.js";
+import {
+  createTaskSchema,
+  updateTaskSchema,
+  idParamSchema,
+} from "../schemas/taskSchemas.js";
 
-/**
- * GET /api/tasks
- * Retorna todas as tarefas.
- */
-function listTasks(req, res) {
-  const tasks = tasksStore.getAll();
-  res.status(200).json(tasks);
+export async function listTasks(req, res, next) {
+  try {
+    const tasks = await taskService.getAll();
+    res.status(200).json(tasks);
+  } catch (error) {
+    next(error);
+  }
 }
 
-/**
- * POST /api/tasks
- * Cria uma nova tarefa. Espera { title: string } no corpo da requisição.
- */
-function createTask(req, res) {
-  const { title } = req.body;
+export async function getTask(req, res, next) {
+  try {
+    const { id } = idParamSchema.parse(req.params);
+    const task = await taskService.getById(id);
 
-  if (!title || typeof title !== "string" || !title.trim()) {
-    return res
-      .status(400)
-      .json({ error: "O campo 'title' é obrigatório e não pode ser vazio." });
+    if (!task) {
+      return res.status(404).json({ error: `Tarefa com id ${id} não encontrada.` });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
   }
-
-  const newTask = tasksStore.create({ title: title.trim() });
-  res.status(201).json(newTask);
 }
 
-/**
- * PUT /api/tasks/:id
- * Atualiza título e/ou status de conclusão de uma tarefa existente.
- */
-function updateTask(req, res) {
-  const id = Number(req.params.id);
-  const { title, completed } = req.body;
-
-  if (title !== undefined && (typeof title !== "string" || !title.trim())) {
-    return res
-      .status(400)
-      .json({ error: "O campo 'title', quando enviado, não pode ser vazio." });
+export async function createTask(req, res, next) {
+  try {
+    const { title } = createTaskSchema.parse(req.body);
+    const newTask = await taskService.create({ title });
+    res.status(201).json(newTask);
+  } catch (error) {
+    next(error);
   }
-
-  if (completed !== undefined && typeof completed !== "boolean") {
-    return res
-      .status(400)
-      .json({ error: "O campo 'completed', quando enviado, deve ser booleano." });
-  }
-
-  const updated = tasksStore.update(id, { title, completed });
-
-  if (!updated) {
-    return res.status(404).json({ error: `Tarefa com id ${id} não encontrada.` });
-  }
-
-  res.status(200).json(updated);
 }
 
-/**
- * DELETE /api/tasks/:id
- * Remove uma tarefa existente.
- */
-function deleteTask(req, res) {
-  const id = Number(req.params.id);
-  const deleted = tasksStore.remove(id);
+export async function updateTask(req, res, next) {
+  try {
+    const { id } = idParamSchema.parse(req.params);
+    const updates = updateTaskSchema.parse(req.body);
+    const updated = await taskService.update(id, updates);
 
-  if (!deleted) {
-    return res.status(404).json({ error: `Tarefa com id ${id} não encontrada.` });
+    if (!updated) {
+      return res.status(404).json({ error: `Tarefa com id ${id} não encontrada.` });
+    }
+
+    res.status(200).json(updated);
+  } catch (error) {
+    next(error);
   }
-
-  res.status(204).send();
 }
 
-module.exports = { listTasks, createTask, updateTask, deleteTask };
+export async function deleteTask(req, res, next) {
+  try {
+    const { id } = idParamSchema.parse(req.params);
+    const deleted = await taskService.remove(id);
+
+    if (!deleted) {
+      return res.status(404).json({ error: `Tarefa com id ${id} não encontrada.` });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
